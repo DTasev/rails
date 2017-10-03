@@ -44,16 +44,21 @@ class ProductTest < ActiveSupport::TestCase
     end
   end
 
-  # TODO test this in a separate script
-  def my_sexy_product_creator(full_product, *custom_fields)
-    unless full_product.nil?
-      return Product.new(full_product)
+  def my_sexy_product_updater(full_product, *overwrite_fields)
+    product = full_product.dup
+    # update the fields of the product
+    overwrite_fields.each do |attr|
+      key, value = attr.first
+      if product.has_key?(key) && !key.nil?
+        product[key] = value
+      end
+      return product
     end
-
-    custom_fields.each {|attribute| full_product.send("#{attribute}", attribute)}
   end
 
-  test "product is not valid without a unique title" do
-    product = Product
+  test "product is not valid without a unique title - i18n" do
+    product = products :ruby
+    assert product.invalid?
+    assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
   end
 end

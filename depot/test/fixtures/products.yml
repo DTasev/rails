@@ -1,5 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+one:
+  title: Programming Ruby 1.9
+  description: Ruby is the fastest
+  image_url: 7apps.jpg
+  price: 49.50
+
 ruby:
   title: Programming Ruby 1.9
   description: Ruby is the fastest
