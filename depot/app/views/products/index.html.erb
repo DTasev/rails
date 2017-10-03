@@ -19,7 +19,7 @@
         <!-- cycle puts alternating background colours on the rows -->
         <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
           <td>
-            <%= image_tag('7apps.jpg', class: 'list_image') %>
+            <%= image_tag(product.image_url, class: 'list_image') %>
           </td>
           <td class="list_description">
             <dl>
