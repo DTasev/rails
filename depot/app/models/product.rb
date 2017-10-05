@@ -1,4 +1,8 @@
 class Product < ApplicationRecord
+  has_many :line_items
+
+  before_destroy :ensure_not_referenced_by_any_line_item
+
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
   validates :title, length: { minimum: 10 }
@@ -7,4 +11,14 @@ class Product < ApplicationRecord
       with: %r{\.(gif|jpg|png)\Z}i,
       message: 'must be a URL for GIF, JPG or PNG image.'
   }
+
+  # ensure that there are no line items referencing this product
+  # this stops us from deleting a product if someone has it in their cart
+  # this makes sense as we don't want to delete a product that someone is going to buy
+  def ensure_not_referenced_by_any_line_item
+    unless line_items.empty?
+      errs.add(:base, 'Line Items present')
+      throw :abort
+    end
+  end
 end

@@ -17,6 +17,7 @@
   <div id="side">
     <ul>
       <li><%= link_to "Home", store_index_path %></li>
+      <li><%= link_to "Cart", cart_path(id: session[:cart_id]) %></li>
     </ul>
     <p class="side_time">Current time<br><%= Time.now.to_formatted_s(:time) %></p>
   </div>
