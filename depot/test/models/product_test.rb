@@ -56,9 +56,15 @@ class ProductTest < ActiveSupport::TestCase
     end
   end
 
-  test "product is not valid without a unique title - i18n" do
-    product = products :ruby
+  # test "product is not valid without a unique title - i18n" do
+  #   product = products :ruby
+  #   assert product.invalid?
+  #   assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
+  # end
+
+  test "product has title of length at least 10" do
+    product = products :short_title
     assert product.invalid?
-    assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
+    assert_equal ["is too short (minimum is 10 characters)"], product.errors[:title]
   end
 end
