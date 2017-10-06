@@ -4,7 +4,7 @@
 
 <ul>
   <% @cart.line_items.each do |item| %>
-      <li><%= link_to item.product.title, item.product %></li>
+      <li><%= link_to item.product.title, item.product %>, Quantity: <%= item.quantity %></li>
   <% end %>
 </ul>
 <%= link_to 'Back to Store', store_index_path %>
