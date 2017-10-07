@@ -17,7 +17,10 @@
   <div id="side">
     <ul>
       <li><%= link_to "Home", store_index_path %></li>
-      <li><%= link_to "Cart", cart_url(session[:cart_id]) %></li>
+      <% unless session[:cart_id].nil? %>
+          <!-- This isn't consistent, what we really want to point to is an empty cart-->
+          <li><%= link_to "Cart", cart_url(session[:cart_id]) %></li>
+      <% end %>
     </ul>
     <p class="side_time">Current time<br><%= Time.now.to_formatted_s(:time) %></p>
   </div>
