@@ -3,7 +3,9 @@
 one:
   product: ruby
   cart: one
+  product_price: 12
 
 two:
   product: two
   cart: two
+  product_price: 46

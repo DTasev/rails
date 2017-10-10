@@ -4,25 +4,32 @@
   <title>Pragprog Books Online Store</title>
   <%= csrf_meta_tags %>
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'application', media: 'all',
+                          'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 
 <body class="<%= controller.controller_name %>">
 <div id="banner">
-  <%= link_to(image_tag('logo.svg', alt: 'The Pragmatic Bookshelf'), store_index_url) %>
+  <%= image_tag 'logo.svg', alt: 'The Pragmatic Bookshelf' %>
   <span class="title"><%= @page_title %></span>
 </div>
 <div id="columns">
   <div id="side">
-    <ul>
-      <li><%= link_to "Home", store_index_path %></li>
-      <% unless session[:cart_id].nil? %>
-          <!-- This isn't consistent, what we really want to point to is an empty cart-->
-          <li><%= link_to "Cart", cart_url(session[:cart_id]) %></li>
+    <div id="cart">
+      <% if @cart %>
+          <%= render @cart %>
       <% end %>
+    </div>
+
+    <ul>
+      <li><a href="http://www....">Home</a></li>
+      <li><a href="http://www..../faq">Questions</a></li>
+      <li><a href="http://www..../news">News</a></li>
+      <li><a href="http://www..../contact">Contact</a></li>
     </ul>
-    <p class="side_time">Current time<br><%= Time.now.to_formatted_s(:time) %></p>
   </div>
   <div id="main">
     <%= yield %>
