@@ -1,9 +1,14 @@
+#---
+# Excerpted from "Agile Web Development with Rails 5",
+# published by The Pragmatic Bookshelf.
+# Copyrights apply to this code. It may not be used to create training material,
+# courses, books, articles, and the like. Contact us if you are in doubt.
+# We make no guarantees that this code is fit for any purpose.
+# Visit http://www.pragmaticprogrammer.com/titles/rails5 for more book information.
+#---
 require 'test_helper'
 
 class ProductTest < ActiveSupport::TestCase
-  # loads the data into the products database before each test
-  fixtures(:products)
-
   test "product attributes must not be empty" do
     product = Product.new
     assert product.invalid?
@@ -14,57 +19,63 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   test "product price must be positive" do
-    product = Product.new(title: "My book title", description: "zzz", image_url: "yyy.jpg")
-
+    product = Product.new(title:       "My Book Title",
+                          description: "yyy",
+                          image_url:   "zzz.jpg")
     product.price = -1
     assert product.invalid?
-    assert_equal ['must be greater than or equal to 0.01'], product.errors[:price]
+    assert_equal ["must be greater than or equal to 0.01"],
+      product.errors[:price]
 
     product.price = 0
     assert product.invalid?
-    assert_equal ['must be greater than or equal to 0.01'], product.errors[:price]
+    assert_equal ["must be greater than or equal to 0.01"], 
+      product.errors[:price]
 
     product.price = 1
     assert product.valid?
   end
 
   def new_product(image_url)
-    Product.new(title: "My book title", description: "zzz", image_url: image_url, price: 1)
+    Product.new(title:       "My Book Title",
+                description: "yyy",
+                price:       1,
+                image_url:   image_url)
   end
 
-  test "image url validation" do
-    ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg http://a.b.c/x/y/z/fred.gif }
+  test "image url" do
+    ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg
+             http://a.b.c/x/y/z/fred.gif }
     bad = %w{ fred.doc fred.gif/more fred.gif.more }
-
+    
     ok.each do |name|
       assert new_product(name).valid?, "#{name} shouldn't be invalid"
     end
+
     bad.each do |name|
       assert new_product(name).invalid?, "#{name} shouldn't be valid"
     end
   end
 
-  def my_sexy_product_updater(full_product, *overwrite_fields)
-    product = full_product.dup
-    # update the fields of the product
-    overwrite_fields.each do |attr|
-      key, value = attr.first
-      if product.has_key?(key) && !key.nil?
-        product[key] = value
-      end
-      return product
-    end
-  end
+  test "product is not valid without a unique title" do
+    product = Product.new(title:       products(:ruby).title,
+                          description: "yyy", 
+                          price:       1, 
+                          image_url:   "fred.gif")
 
-  # test "product is not valid without a unique title - i18n" do
-  #   product = products :ruby
-  #   assert product.invalid?
-  #   assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
-  # end
-
-  test "product has title of length at least 10" do
-    product = products :short_title
     assert product.invalid?
-    assert_equal ["is too short (minimum is 10 characters)"], product.errors[:title]
+    assert_equal ["has already been taken"], product.errors[:title]
   end
+
+  test "product is not valid without a unique title - i18n" do
+    product = Product.new(title:       products(:ruby).title,
+                          description: "yyy", 
+                          price:       1, 
+                          image_url:   "fred.gif")
+
+    assert product.invalid?
+    assert_equal [I18n.translate('errors.messages.taken')],
+                 product.errors[:title]
+  end
+  
 end

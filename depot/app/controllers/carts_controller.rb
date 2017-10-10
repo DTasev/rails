@@ -1,7 +1,14 @@
+#---
+# Excerpted from "Agile Web Development with Rails 5",
+# published by The Pragmatic Bookshelf.
+# Copyrights apply to this code. It may not be used to create training material,
+# courses, books, articles, and the like. Contact us if you are in doubt.
+# We make no guarantees that this code is fit for any purpose.
+# Visit http://www.pragmaticprogrammer.com/titles/rails5 for more book information.
+#---
 class CartsController < ApplicationController
   before_action :set_cart, only: [:show, :edit, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
-
   # GET /carts
   # GET /carts.json
   def index
@@ -29,11 +36,11 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @cart.save
-        format.html {redirect_to @cart, notice: 'Cart was successfully created.'}
-        format.json {render :show, status: :created, location: @cart}
+        format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+        format.json { render :show, status: :created, location: @cart }
       else
-        format.html {render :new}
-        format.json {render json: @cart.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @cart.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,11 +50,11 @@ class CartsController < ApplicationController
   def update
     respond_to do |format|
       if @cart.update(cart_params)
-        format.html {redirect_to @cart, notice: 'Cart was successfully updated.'}
-        format.json {render :show, status: :ok, location: @cart}
+        format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
+        format.json { render :show, status: :ok, location: @cart }
       else
-        format.html {render :edit}
-        format.json {render json: @cart.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @cart.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,25 +65,26 @@ class CartsController < ApplicationController
     @cart.destroy if @cart.id == session[:cart_id]
     session[:cart_id] = nil
     respond_to do |format|
-      # redirect back to the main page
-      format.html {redirect_to store_index_url, notice: 'Your cart is currently empty.'}
-      format.json {head :no_content}
+      format.html { redirect_to store_index_url,
+        notice: 'Your cart is currently empty' }
+      format.json { head :no_content }
     end
   end
 
+  # ...
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_cart
-    @cart = Cart.find(params[:id])
-  end
+  # ...
 
-  def invalid_cart
-    logger.error "Attempt to access invalid cart #{params[:id]}"
-    redirect_to store_index_url, notice: 'Invalid cart'
-  end
+    def set_cart
+      @cart = Cart.find(params[:id])
+    end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def cart_params
-    params.fetch(:cart, {})
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def cart_params
+      params.fetch(:cart, {})
+    end
+    def invalid_cart
+      logger.error "Attempt to access invalid cart #{params[:id]}"
+      redirect_to store_index_url, notice: 'Invalid cart'
+    end
 end

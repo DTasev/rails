@@ -1,4 +1,4 @@
-<%= form_with(model: line_item, local: true) do |form| %>
+<%= form_for(line_item) do |f| %>
   <% if line_item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(line_item.errors.count, "error") %> prohibited this line_item from being saved:</h2>
@@ -12,16 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :product_id %>
-    <%= form.text_field :product_id, id: :line_item_product_id %>
+    <%= f.label :product_id %>
+    <%= f.text_field :product_id %>
   </div>
 
   <div class="field">
-    <%= form.label :cart_id %>
-    <%= form.text_field :cart_id, id: :line_item_cart_id %>
+    <%= f.label :cart_id %>
+    <%= f.text_field :cart_id %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= f.submit %>
   </div>
 <% end %>
